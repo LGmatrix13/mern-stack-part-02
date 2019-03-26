@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Listing = new Schema({
+    listing_name: {
+        type: String
+    }, 
     listing_description: {
         type: String
     },
