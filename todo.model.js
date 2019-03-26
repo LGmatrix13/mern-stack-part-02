@@ -1,18 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Todo = new Schema({
-    todo_description: {
+let Listing = new Schema({
+    listing_description: {
         type: String
     },
-    todo_responsible: {
+    listing_location: {
         type: String
     },
-    todo_priority: {
+    listing_link: {
         type: String
-    },
-    todo_completed: {
-        type: Boolean
     }
 });
 
