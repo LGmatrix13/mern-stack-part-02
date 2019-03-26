@@ -3,61 +3,60 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const todoRoutes = express.Router();
+const listingRoutes = express.Router();
 const PORT = 4000;
 
-let Todo = require('./todo.model');
+let Listing = require('./listing.model');
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/todos', { useNewUrlParser: true });
+mongoose.connect('mongodb://127.0.0.1:27017/listings', { useNewUrlParser: true });
 const connection = mongoose.connection;
 
 connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
 })
 
-todoRoutes.route('/').get(function(req, res) {
-    Todo.find(function(err, todos) {
+listingRoutes.route('/').get(function(req, res) {
+    Listing.find(function(err, listings) {
         if (err) {
             console.log(err);
         } else {
-            res.json(todos);
+            res.json(listing);
         }
     });
 });
 
-todoRoutes.route('/:id').get(function(req, res) {
+listingRoutes.route('/:id').get(function(req, res) {
     let id = req.params.id;
-    Todo.findById(id, function(err, todo) {
-        res.json(todo);
+    Listing.findById(id, function(err, listing) {
+        res.json(listing);
     });
 });
 
-todoRoutes.route('/add').post(function(req, res) {
-    let todo = new Todo(req.body);
-    todo.save()
-        .then(todo => {
-            res.status(200).json({'todo': 'todo added successfully'});
+listingRoutes.route('/add').post(function(req, res) {
+    let listing = new listing(req.body);
+    listing.save()
+        .then(listing => {
+            res.status(200).json({'listing': 'listing added successfully'});
         })
         .catch(err => {
-            res.status(400).send('adding new todo failed');
+            res.status(400).send('adding new listing failed');
         });
 });
 
-todoRoutes.route('/update/:id').post(function(req, res) {
-    Todo.findById(req.params.id, function(err, todo) {
-        if (!todo)
+listingRoutes.route('/update/:id').post(function(req, res) {
+    listing.findById(req.params.id, function(err, listing) {
+        if (!listing)
             res.status(404).send('data is not found');
         else
-            todo.todo_description = req.body.todo_description;
-            todo.todo_responsible = req.body.todo_responsible;
-            todo.todo_priority = req.body.todo_priority;
-            todo.todo_completed = req.body.todo_completed;
+            listing.listing_description = req.body.lisiting_description;
+            listing.listing_location = req.body.listing_location;
+            listing.listing_link = req.body.listing_link;
 
-            todo.save().then(todo => {
-                res.json('Todo updated');
+            listing.save().then(listing => {
+                res.json('Listing updated');
             })
             .catch(err => {
                 res.status(400).send("Update not possible");
@@ -65,7 +64,7 @@ todoRoutes.route('/update/:id').post(function(req, res) {
     });
 });
 
-app.use('/todos', todoRoutes);
+app.use('/Listings', todoRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
