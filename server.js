@@ -54,6 +54,7 @@ listingRoutes.route('/update/:id').post(function(req, res) {
             listing.listing_description = req.body.lisiting_description;
             listing.listing_location = req.body.listing_location;
             listing.listing_link = req.body.listing_link;
+            listing.listing_name = req.body.listing_name;
 
             listing.save().then(listing => {
                 res.json('Listing updated');
